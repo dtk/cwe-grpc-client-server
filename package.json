@@ -1,0 +1,35 @@
+{
+  "name": "controller-workflow-executor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "start.js",
+  "scripts": {
+    "server": "node out/server.js",
+    "receiver": "node out/receiver.js",
+    "start": "node cwe-stub-client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtk/controller-workflow-executor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dtk/controller-workflow-executor/issues"
+  },
+  "homepage": "https://github.com/dtk/controller-workflow-executor#readme",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.4.0",
+    "grpc": "^1.19.0",
+    "grpc-helper": "^0.4.1",
+    "grpc-promise": "^1.4.0",
+    "nats": "^1.2.2",
+    "protobufjs": "^6.8.8",
+    "ts-nats": "^1.1.2",
+    "typescript": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^11.9.3",
+    "ts-jest": "^23.10.5"
+  }
+}
