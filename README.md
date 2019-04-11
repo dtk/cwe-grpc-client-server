@@ -14,8 +14,12 @@ npm install
 ```
 node server.js
 ```
-2. Execute controller workflow executor `start.ts` script
-3. Execute grpc client script:
+2. Execute controller workflow executor `start.ts` script; in controller workflow executor directory:
+```
+npm start
+```
+- If there is a port problem, the ports need to be changed in `server.js` and `cwe-stub-client.js`, and in `start.ts` of controller workflow executor
+3. After controller workflow executor server successfully starts, execute grpc client script; in cwe-grpc-client-server directory:
 ```
 npm start
 ```
