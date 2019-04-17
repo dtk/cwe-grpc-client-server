@@ -64,7 +64,7 @@ ruby_action_3.taskId = 5;
 ruby_action_3.topTaskId = 2;
 
 var bash_handler = {
-  command: "echo Test"
+  command: "kubectl create -f https://k8s.io/examples/admin/namespace-dev.json"
 };
 
 var bash_handler_buffer = Buffer.from(JSON.stringify(bash_handler));
@@ -154,3 +154,4 @@ var abstract_action = {
 }
 
 module.exports = [ruby_action_1, abstract_action, ruby_action_2];
+//module.exports = executable_actions = [bash_action];
