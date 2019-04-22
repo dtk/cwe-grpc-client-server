@@ -3,6 +3,7 @@ syntax = "proto3";
 
 service ActionRequest {
   rpc StreamAction (ExecutableAction) returns (ActionUpdate) {}
+  rpc Ping (ExecutableAction) returns (RequestAck) {}
 }
 
 message TestRequest {
@@ -85,6 +86,5 @@ message ExecutableAction {
   int32 timeout_info = 12;
   string type = 13;
   string method = 14;
-  string reply_to = 15;
-  int32 id = 16;
+  int32 id = 15;
 }
