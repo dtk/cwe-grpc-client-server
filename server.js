@@ -21,6 +21,21 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function testStreamStream(call) {
+  call.on('data', function (message) {
+    console.log('Server: Stream Message Received = ', message); // Server: Stream Message Received = {id: 1}
+    setTimeout(function () {
+      call.write({
+        id: message.id // IMPORTANT only for Bidirectional Stream Request
+      });
+    }, 10);
+  });
+ 
+  call.on('end', function () {
+    call.end();
+  });
+}
+
 function reqReceived(call, callback) {
   const receivedMessage = call.request;
   console.log(receivedMessage);
@@ -72,7 +87,7 @@ async function streamAction(call, callback) {
  */
 function main() {
   var server = new grpc.Server();
-  server.addService(executable_action_proto.ActionRequest.service, { reqReceived: reqReceived, streamAction: streamAction, ping: ping});
+  server.addService(executable_action_proto.ActionRequest.service, { reqReceived: reqReceived, streamAction: streamAction, ping: ping, testStreamStream: testStreamStream });
   server.bind('0.0.0.0:' + port, grpc.ServerCredentials.createInsecure());
   server.start();
   console.log("server started: ", server);

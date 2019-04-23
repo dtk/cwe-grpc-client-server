@@ -4,6 +4,7 @@ syntax = "proto3";
 service ActionRequest {
   rpc StreamAction (ExecutableAction) returns (ActionUpdate) {}
   rpc Ping (ExecutableAction) returns (RequestAck) {}
+  rpc TestStreamStream (stream TestRequest) returns (stream TestResponse) {}
 }
 
 message TestRequest {
