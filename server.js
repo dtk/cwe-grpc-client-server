@@ -14,7 +14,7 @@ var packageDefinition = protoLoader.loadSync(
      oneofs: true
     });
 var executable_action_proto = grpc.loadPackageDefinition(packageDefinition).pckg_executable_action;
-const delay = 2000;
+const delay = 600000;
 
 function sleep(ms) {
   console.log("Waiting", ms/1000, "s")
@@ -24,11 +24,9 @@ function sleep(ms) {
 function testStreamStream(call) {
   call.on('data', function (message) {
     console.log('Server: Stream Message Received = ', message); // Server: Stream Message Received = {id: 1}
-    setTimeout(function () {
       call.write({
         id: message.id // IMPORTANT only for Bidirectional Stream Request
       });
-    }, 10);
   });
  
   call.on('end', function () {

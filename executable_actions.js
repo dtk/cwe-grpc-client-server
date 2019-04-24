@@ -134,7 +134,7 @@ var abstract_action_2 = {
   topTaskId: 2
 };
 
-var executable_actions_2 = Buffer.from(JSON.stringify([bash_action, ruby_action_3, abstract_action_2]));
+var executable_actions_2 = Buffer.from(JSON.stringify([/*bash_action, */ruby_action_3, abstract_action_2]));
 
 var decomposition = {
   temporalRelationship: 'SEQUENTIAL',

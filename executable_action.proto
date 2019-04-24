@@ -2,7 +2,7 @@ package pckg_executable_action;
 syntax = "proto3";
 
 service ActionRequest {
-  rpc StreamAction (ExecutableAction) returns (ActionUpdate) {}
+  rpc StreamAction (ExecutableAction) returns (RequestAck) {}
   rpc Ping (ExecutableAction) returns (RequestAck) {}
   rpc TestStreamStream (stream TestRequest) returns (stream TestResponse) {}
 }
