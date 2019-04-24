@@ -139,7 +139,7 @@ var abstract_action_2 = {
 var executable_actions_2 = Buffer.from(JSON.stringify([ruby_action_5, ruby_action_3, abstract_action_2]));
 
 var decomposition = {
-  temporalRelationship: 'SEQUENTIAL',
+  temporalRelationship: 'CONCURRENT',
   nestedActions: executable_actions_2
 };
 
@@ -157,14 +157,16 @@ var abstract_action = {
 
 module.exports = [ruby_action_1, abstract_action, ruby_action_2];
 
+// root abstract action is labeled as sequential
+// execution order if executing from root abstract action:
 //    var name     : id
-//   ruby_action_1 : 1
-// abstract_action : 2
-//   ruby_action_2 : 3
-//   ruby_action_5 : 21
-//   ruby_action_3 : 5
-//abstract_action_2: 20
-//   ruby_action_4 : 19
+//   ruby_action_1 : 1   //sequential (child of root)
+// abstract_action : 2   //labeled as concurrent
+//   ruby_action_5 : 21  //concurrent (child of 2)
+//   ruby_action_3 : 5   //concurrent (child of 2)
+//abstract_action_2: 20  //labeled as sequential
+//   ruby_action_4 : 19  //sequential (child of 20)
+//   ruby_action_2 : 3   //sequential (child of root)
 
 // ordering:
 // root abstract action (id: 0): [1, 2, 3]
