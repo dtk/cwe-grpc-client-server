@@ -114,6 +114,8 @@ var bash_action = {
 var ruby_action_4 = {...ruby_action_3};
 ruby_action_4.topTaskId = 20;
 ruby_action_4.taskId = 19;
+var ruby_action_5 = {...ruby_action_3};
+ruby_action_5.taskId = 21;
 
 var executable_actions_3 = Buffer.from(JSON.stringify([ruby_action_4]));
 
@@ -134,7 +136,7 @@ var abstract_action_2 = {
   topTaskId: 2
 };
 
-var executable_actions_2 = Buffer.from(JSON.stringify([bash_action, ruby_action_3, abstract_action_2]));
+var executable_actions_2 = Buffer.from(JSON.stringify([ruby_action_5, ruby_action_3, abstract_action_2]));
 
 var decomposition = {
   temporalRelationship: 'SEQUENTIAL',
@@ -154,4 +156,17 @@ var abstract_action = {
 }
 
 module.exports = [ruby_action_1, abstract_action, ruby_action_2];
-//module.exports = executable_actions = [bash_action];
+
+//    var name     : id
+//   ruby_action_1 : 1
+// abstract_action : 2
+//   ruby_action_2 : 3
+//   ruby_action_5 : 21
+//   ruby_action_3 : 5
+//abstract_action_2: 20
+//   ruby_action_4 : 19
+
+// ordering:
+// root abstract action (id: 0): [1, 2, 3]
+// abstract_action (id: 2): [21, 5, 20]
+// abstract_action_2 (id: 20): [19]
