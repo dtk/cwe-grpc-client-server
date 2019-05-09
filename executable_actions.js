@@ -139,7 +139,7 @@ var abstract_action_2 = {
 var executable_actions_2 = Buffer.from(JSON.stringify([ruby_action_5, ruby_action_3, abstract_action_2]));
 
 var decomposition = {
-  temporalRelationship: 'CONCURRENT',
+  temporalRelationship: 'SEQUENTIAL',
   nestedActions: executable_actions_2
 };
 
