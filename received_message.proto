@@ -5,6 +5,7 @@ import "executable_action.proto";
 
 service ActionRequest {
   rpc SendAction (ReceivedMessage) returns (RequestAck) {}
+  rpc CancelAction (CancelMessage) returns (RequestAck) {}
 }
 
 message ActionUpdate {
@@ -37,4 +38,8 @@ message AbstractAction {
 message ReceivedMessage {
   string type = 1;
   AbstractAction abstract_action = 2;
+}
+
+message CancelMessage {
+  int32 task_id = 1;
 }

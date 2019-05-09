@@ -6,7 +6,8 @@
   "scripts": {
     "server": "node out/server.js",
     "receiver": "node out/receiver.js",
-    "start": "node cwe-stub-client.js"
+    "send": "node send-action.js",
+    "cancel": "node cancel-action.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "grpc": "^1.19.0",
     "grpc-helper": "^0.4.1",
     "grpc-promise": "^1.4.0",
+    "kubernetes-client": "^7.0.1",
     "nats": "^1.2.2",
     "protobufjs": "^6.8.8",
     "ts-nats": "^1.1.2",

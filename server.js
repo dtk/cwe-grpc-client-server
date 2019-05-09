@@ -1,6 +1,12 @@
 var PROTO_PATH = 'executable_action.proto';
 var exec = require('child_process').exec, child;
 var k8s = require('@kubernetes/client-node');
+const Client = require('kubernetes-client').Client
+const K8sConfig = require('kubernetes-client').config
+const config = K8sConfig.fromKubeconfig()
+const client = new Client({ config: config, version: '1.9' })
+
+const testNamespace = require('./test_namespace.json')
 
 var grpc = require('grpc');
 var protoLoader = require('@grpc/proto-loader');
@@ -14,7 +20,12 @@ var packageDefinition = protoLoader.loadSync(
      oneofs: true
     });
 var executable_action_proto = grpc.loadPackageDefinition(packageDefinition).pckg_executable_action;
+<<<<<<< HEAD
 const delay = 600000;
+=======
+const delay = 4000;
+let cancelled = false;
+>>>>>>> DTK-3744
 
 function sleep(ms) {
   console.log("Waiting", ms/1000, "s")
@@ -50,42 +61,67 @@ async function ping(call, callback) {
 }
 
 async function streamAction(call, callback) {
+  cancelled = false;
   console.log('Server: Stream Message Received = ', call.request);
-  if(call.request.lang === 'bash'){
-    const handler = JSON.parse(call.request.handlerBuffer);
-    await sleep(4000);
-    console.log("Executing:", handler.command);
-    const res = await exec(handler.command);
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-    const watch = new k8s.Watch(kc);
-    const req = watch.watch('/api/v1/namespaces', {}, async (type, obj) => {
-      console.log(type);
-      if(type === 'DELETED'){
-        console.log("Job finished, aborting watch");
-        req.abort();
-        callback(null, { taskId: call.request.taskId, message: 'Delete success' });
-      }
-      else if(type === 'ADDED' && obj.metadata.name === 'development'){
-        console.log(obj);
-        console.log("Object '", obj.metadata.name, "' created. Deleting...");
-        await exec('kubectl delete namespace development');
-      }
-    }, (err) => { console.log(err); });
+  if(cancelled) callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
+  await sleep(4000);
+  if(cancelled) callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
+  try {
+    if(cancelled) callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
+    const create = await client.api.v1.namespaces.post({body: testNamespace});
+    console.log(create);
+    if(cancelled) callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
+    const deleteNamespace = await client.api.v1.namespaces("test").delete();
+    console.log(deleteNamespace);
   }
-  else{
-    await sleep(delay);
-    callback(null, { taskId: call.request.taskId, message: 'Execution success' });
+  catch(error) {
+    callback(null, { taskId: call.request.taskId, message: error });
   }
-  
+  callback(null, { taskId: call.request.taskId, message: 'Execution success' });
 }
-/**
- * Starts an RPC server that receives requests for the Greeter service at the
- * sample server port
- */
+
+// async function streamAction(call, callback) {
+//   console.log('Server: Stream Message Received = ', call.request);
+//   cancelled = false;
+//   if(call.request.lang === 'bash'){
+//     const handler = JSON.parse(call.request.handlerBuffer);
+//     await sleep(4000);
+//     console.log("Executing:", handler.command);
+//     const res = await exec(handler.command);
+//     const kc = new k8s.KubeConfig();
+//     kc.loadFromDefault();
+//     const watch = new k8s.Watch(kc);
+//     const req = watch.watch('/api/v1/namespaces', {}, async (type, obj) => {
+//       console.log(type);
+//       if(type === 'DELETED'){
+//         console.log("Job finished, aborting watch");
+//         req.abort();
+//         callback(null, { taskId: call.request.taskId, message: 'Delete success' });
+//       }
+//       else if(type === 'ADDED' && obj.metadata.name === 'development'){
+//         console.log(obj);
+//         console.log("Object '", obj.metadata.name, "' created. Deleting...");
+//         await exec('kubectl delete namespace development');
+//       }
+//     }, (err) => { console.log(err); });
+//   }
+//   else{
+//     await sleep(delay);
+//     if(!cancelled) callback(null, { taskId: call.request.taskId, message: 'Execution success' });
+//     else callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
+//   }
+  
+// }
+
+async function CancelActionRemote(call, callback) {
+  cancelled = true;
+  console.log(call.request);
+  callback(null, { taskId: call.request.taskId, message: 'Cancel received and updated'});
+}
+
 function main() {
   var server = new grpc.Server();
-  server.addService(executable_action_proto.ActionRequest.service, { reqReceived: reqReceived, streamAction: streamAction, ping: ping, testStreamStream: testStreamStream });
+  server.addService(executable_action_proto.ActionRequest.service, { CancelActionRemote: CancelActionRemote, reqReceived: reqReceived, streamAction: streamAction, ping: ping, testStreamStream: testStreamStream });
   server.bind('0.0.0.0:' + port, grpc.ServerCredentials.createInsecure());
   server.start();
   console.log("server started: ", server);

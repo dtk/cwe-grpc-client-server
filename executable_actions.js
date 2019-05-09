@@ -114,6 +114,8 @@ var bash_action = {
 var ruby_action_4 = {...ruby_action_3};
 ruby_action_4.topTaskId = 20;
 ruby_action_4.taskId = 19;
+var ruby_action_5 = {...ruby_action_3};
+ruby_action_5.taskId = 21;
 
 var executable_actions_3 = Buffer.from(JSON.stringify([ruby_action_4]));
 
@@ -134,7 +136,11 @@ var abstract_action_2 = {
   topTaskId: 2
 };
 
+<<<<<<< HEAD
 var executable_actions_2 = Buffer.from(JSON.stringify([/*bash_action, */ruby_action_3, abstract_action_2]));
+=======
+var executable_actions_2 = Buffer.from(JSON.stringify([ruby_action_5, ruby_action_3, abstract_action_2]));
+>>>>>>> DTK-3744
 
 var decomposition = {
   temporalRelationship: 'SEQUENTIAL',
@@ -154,4 +160,19 @@ var abstract_action = {
 }
 
 module.exports = [ruby_action_1, abstract_action, ruby_action_2];
-//module.exports = executable_actions = [bash_action];
+
+// root abstract action is labeled as sequential
+// execution order if executing from root abstract action:
+//    var name     : id
+//   ruby_action_1 : 1   //sequential (child of root)
+// abstract_action : 2   //labeled as concurrent
+//   ruby_action_5 : 21  //concurrent (child of 2)
+//   ruby_action_3 : 5   //concurrent (child of 2)
+//abstract_action_2: 20  //labeled as sequential
+//   ruby_action_4 : 19  //sequential (child of 20)
+//   ruby_action_2 : 3   //sequential (child of root)
+
+// ordering:
+// root abstract action (id: 0): [1, 2, 3]
+// abstract_action (id: 2): [21, 5, 20]
+// abstract_action_2 (id: 20): [19]
