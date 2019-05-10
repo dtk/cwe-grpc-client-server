@@ -25,6 +25,7 @@ message ActionUpdate {
 message RequestAck {
   int32 task_id = 1;
   string message = 2;
+  string status = 3;
 }
 
 message Pair {

@@ -20,12 +20,8 @@ var packageDefinition = protoLoader.loadSync(
      oneofs: true
     });
 var executable_action_proto = grpc.loadPackageDefinition(packageDefinition).pckg_executable_action;
-<<<<<<< HEAD
-const delay = 600000;
-=======
 const delay = 4000;
 let cancelled = false;
->>>>>>> DTK-3744
 
 function sleep(ms) {
   console.log("Waiting", ms/1000, "s")
@@ -63,21 +59,18 @@ async function ping(call, callback) {
 async function streamAction(call, callback) {
   cancelled = false;
   console.log('Server: Stream Message Received = ', call.request);
-  if(cancelled) callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
   await sleep(4000);
-  if(cancelled) callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
   try {
-    if(cancelled) callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
     const create = await client.api.v1.namespaces.post({body: testNamespace});
     console.log(create);
-    if(cancelled) callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
-    const deleteNamespace = await client.api.v1.namespaces("test").delete();
+    deleteNamespace = await client.api.v1.namespaces("test").delete();
     console.log(deleteNamespace);
   }
   catch(error) {
-    callback(null, { taskId: call.request.taskId, message: error });
+    callback(null, { taskId: call.request.taskId, message: 'Execution success, but error: ' + error, status: 'DONE' });
+    //callback(null, { taskId: call.request.taskId, message: error, status: 'ERROR' });
   }
-  callback(null, { taskId: call.request.taskId, message: 'Execution success' });
+  callback(null, { taskId: call.request.taskId, message: 'Execution success', status: 'DONE' });
 }
 
 // async function streamAction(call, callback) {
