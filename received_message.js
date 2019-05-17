@@ -19,7 +19,24 @@ var abstract_action = {
   topTaskId: -1
 };
 
+// module.exports = received_message = {
+//   type: 'ABSTRACT',
+//   abstractAction: abstract_action
+// };
+
+// module.exports = received_message = {
+//   endpoint: "dtk.io",
+//   path: "v1alpha1.actions",
+//   index: 0
+// };
+
+cursor = {
+  index: 0,
+  position: "after"
+}
+
 module.exports = received_message = {
-  type: 'ABSTRACT',
-  abstractAction: abstract_action
-};
+  name: "action-instance1",
+  namespace: "ns",
+  cursor
+}

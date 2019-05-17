@@ -36,9 +36,26 @@ message AbstractAction {
   int32 top_task_id = 9;
 };
 
+// message ReceivedMessage {
+//   string type = 1;
+//   AbstractAction abstract_action = 2;
+// }
+
+// message ReceivedMessage {
+//   string endpoint = 1;
+//   string path = 2;
+//   int32 index = 3;
+// }
+
+message Cursor {
+  int32 index = 1;
+  string position = 2;
+}
+
 message ReceivedMessage {
-  string type = 1;
-  AbstractAction abstract_action = 2;
+  string name = 1;
+  string namespace = 2;
+  Cursor cursor = 3;
 }
 
 message CancelMessage {

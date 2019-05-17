@@ -20,7 +20,7 @@ async function main() {
   var client = new received_message_proto.ActionRequest('0.0.0.0:8083', grpc.credentials.createInsecure());
   grpc_promise.promisifyAll(client, { timeout_message: 6000 });
   const send = client.sendAction();
-  console.log("Sending abstract action id:", received_message.abstractAction.taskId, "to cwe");
+  console.log("Sending: ", received_message);
   try{
     const res = await send.sendMessage(received_message);
   }

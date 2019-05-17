@@ -74,22 +74,26 @@ message ExecutionEnvironment {
   string docker_file = 2;
 }
 
+// message ExecutableAction {
+//   int32 protocol_version = 1;
+//   int32 task_id = 2;
+//   int32 top_task_id = 3;
+//   string lang = 4;
+//   bytes handler_buffer = 5;
+//   bytes environment_buffer = 6;
+//   string component_instance = 7;
+//   Attributes attributes = 8;
+//   string user_public_key = 9;
+//   int32 debug_port_request = 10;
+//   int32 retry_info = 11;
+//   int32 timeout_info = 12;
+//   string type = 13;
+//   string method = 14;
+//   int32 id = 15;
+// }
+
 message ExecutableAction {
-  int32 protocol_version = 1;
-  int32 task_id = 2;
-  int32 top_task_id = 3;
-  string lang = 4;
-  bytes handler_buffer = 5;
-  bytes environment_buffer = 6;
-  string component_instance = 7;
-  Attributes attributes = 8;
-  string user_public_key = 9;
-  int32 debug_port_request = 10;
-  int32 retry_info = 11;
-  int32 timeout_info = 12;
-  string type = 13;
-  string method = 14;
-  int32 id = 15;
+  int32 action_id = 1;
 }
 
 message CancelMessage {

@@ -21,7 +21,10 @@ var packageDefinition = protoLoader.loadSync(
     });
 var executable_action_proto = grpc.loadPackageDefinition(packageDefinition).pckg_executable_action;
 const delay = 4000;
-let cancelled = false;
+// let cancelled = false;
+
+// const crd = require('./test_crd.json');
+const template = require('./template_crd.json');
 
 function sleep(ms) {
   console.log("Waiting", ms/1000, "s")
@@ -58,19 +61,32 @@ async function ping(call, callback) {
 
 async function streamAction(call, callback) {
   cancelled = false;
+  client.addCustomResourceDefinition(template);
   console.log('Server: Stream Message Received = ', call.request);
-  await sleep(4000);
+  callback(null, { taskId: call.request.taskId, message: 'Message received', status: 'received' });
   try {
-    const create = await client.api.v1.namespaces.post({body: testNamespace});
-    console.log(create);
-    deleteNamespace = await client.api.v1.namespaces("test").delete();
-    console.log(deleteNamespace);
+
+    let crdObject = await client.apis['dtk.io'].v1alpha1.namespace('ns').actions('action-instance1').get();
+    console.log(crdObject);
+    crdObject.body.spec.status.steps.push({ id: call.request.actionId, state: "EXECUTING", startedAt: new Date() })
+    let update = await client.apis['dtk.io'].v1alpha1.namespace('ns').actions('action-instance1').put(crdObject);
+    console.log("[ KUBE ] Updated action to executing in crd", update);
+    await sleep(3000);
+
+    crdObject = await client.apis['dtk.io'].v1alpha1.namespace('ns').actions('action-instance1').get();
+    const index = crdObject.body.spec.status.steps.findIndex((element) => {
+      return element.id == call.request.actionId;
+    })
+    crdObject.body.spec.status.steps[index].state = "FINISHED";
+    crdObject.body.spec.status.steps[index].finishedAt = new Date();
+    update = await client.apis['dtk.io'].v1alpha1.namespace('ns').actions('action-instance1').put(crdObject);
+    console.log("[ KUBE ] Updated action to finished in crd", update);
+
   }
   catch(error) {
     callback(null, { taskId: call.request.taskId, message: 'Execution success, but error: ' + error, status: 'DONE' });
     //callback(null, { taskId: call.request.taskId, message: error, status: 'ERROR' });
   }
-  callback(null, { taskId: call.request.taskId, message: 'Execution success', status: 'DONE' });
 }
 
 // async function streamAction(call, callback) {
