@@ -21,9 +21,7 @@ var packageDefinition = protoLoader.loadSync(
     });
 var executable_action_proto = grpc.loadPackageDefinition(packageDefinition).pckg_executable_action;
 const delay = 4000;
-// let cancelled = false;
 
-// const crd = require('./test_crd.json');
 const template = require('./template_crd.json');
 
 function sleep(ms) {
@@ -88,39 +86,6 @@ async function streamAction(call, callback) {
     //callback(null, { taskId: call.request.taskId, message: error, status: 'ERROR' });
   }
 }
-
-// async function streamAction(call, callback) {
-//   console.log('Server: Stream Message Received = ', call.request);
-//   cancelled = false;
-//   if(call.request.lang === 'bash'){
-//     const handler = JSON.parse(call.request.handlerBuffer);
-//     await sleep(4000);
-//     console.log("Executing:", handler.command);
-//     const res = await exec(handler.command);
-//     const kc = new k8s.KubeConfig();
-//     kc.loadFromDefault();
-//     const watch = new k8s.Watch(kc);
-//     const req = watch.watch('/api/v1/namespaces', {}, async (type, obj) => {
-//       console.log(type);
-//       if(type === 'DELETED'){
-//         console.log("Job finished, aborting watch");
-//         req.abort();
-//         callback(null, { taskId: call.request.taskId, message: 'Delete success' });
-//       }
-//       else if(type === 'ADDED' && obj.metadata.name === 'development'){
-//         console.log(obj);
-//         console.log("Object '", obj.metadata.name, "' created. Deleting...");
-//         await exec('kubectl delete namespace development');
-//       }
-//     }, (err) => { console.log(err); });
-//   }
-//   else{
-//     await sleep(delay);
-//     if(!cancelled) callback(null, { taskId: call.request.taskId, message: 'Execution success' });
-//     else callback(null, { taskId: call.request.taskId, message: 'Cancelled' });
-//   }
-  
-// }
 
 async function CancelActionRemote(call, callback) {
   cancelled = true;
