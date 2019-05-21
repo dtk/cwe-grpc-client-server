@@ -1,12 +1,8 @@
 var PROTO_PATH = 'executable_action.proto';
-var exec = require('child_process').exec, child;
-var k8s = require('@kubernetes/client-node');
 const Client = require('kubernetes-client').Client
 const K8sConfig = require('kubernetes-client').config
 const config = K8sConfig.fromKubeconfig()
 const client = new Client({ config: config, version: '1.9' })
-
-const testNamespace = require('./test_namespace.json')
 
 var grpc = require('grpc');
 var protoLoader = require('@grpc/proto-loader');
@@ -20,7 +16,6 @@ var packageDefinition = protoLoader.loadSync(
      oneofs: true
     });
 var executable_action_proto = grpc.loadPackageDefinition(packageDefinition).pckg_executable_action;
-const delay = 4000;
 
 const template = require('./template_crd.json');
 
