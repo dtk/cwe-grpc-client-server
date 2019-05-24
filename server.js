@@ -59,20 +59,20 @@ async function streamAction(call, callback) {
   callback(null, { taskId: call.request.taskId, message: 'Message received', status: 'received' });
   try {
 
-    let crdObject = await client.apis['dtk.io'].v1alpha1.namespace('ns').actions('action-instance1').get();
+    let crdObject = await client.apis['dtk.io'].v1alpha1.namespace('test').actions('group-test1').get();
     console.log(crdObject);
     crdObject.body.spec.status.steps.push({ id: call.request.actionId, state: "EXECUTING", startedAt: new Date() })
-    let update = await client.apis['dtk.io'].v1alpha1.namespace('ns').actions('action-instance1').put(crdObject);
+    let update = await client.apis['dtk.io'].v1alpha1.namespace('test').actions('group-test1').put(crdObject);
     console.log("[ KUBE ] Updated action to executing in crd", update);
     await sleep(3000);
 
-    crdObject = await client.apis['dtk.io'].v1alpha1.namespace('ns').actions('action-instance1').get();
+    crdObject = await client.apis['dtk.io'].v1alpha1.namespace('test').actions('group-test1').get();
     const index = crdObject.body.spec.status.steps.findIndex((element) => {
       return element.id == call.request.actionId;
     })
     crdObject.body.spec.status.steps[index].state = "FINISHED";
     crdObject.body.spec.status.steps[index].finishedAt = new Date();
-    update = await client.apis['dtk.io'].v1alpha1.namespace('ns').actions('action-instance1').put(crdObject);
+    update = await client.apis['dtk.io'].v1alpha1.namespace('test').actions('group-test1').put(crdObject);
     console.log("[ KUBE ] Updated action to finished in crd", update);
 
   }
