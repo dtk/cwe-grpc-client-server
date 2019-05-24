@@ -36,7 +36,7 @@ cursor = {
 }
 
 module.exports = received_message = {
-  name: "action-instance1",
-  namespace: "ns",
+  name: "group-test1",
+  namespace: "test",
   cursor
 }
