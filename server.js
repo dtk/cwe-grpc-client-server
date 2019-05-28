@@ -54,25 +54,28 @@ async function ping(call, callback) {
 
 async function streamAction(call, callback) {
   cancelled = false;
+  const receivedMessage = require('./received_message');
   client.addCustomResourceDefinition(template);
   console.log('Server: Stream Message Received = ', call.request);
+  const name = receivedMessage.name;
+  const namespace = receivedMessage.namespace;
   callback(null, { taskId: call.request.taskId, message: 'Message received', status: 'received' });
   try {
 
-    let crdObject = await client.apis['dtk.io'].v1alpha1.namespace('test').actions('group-test1').get();
+    let crdObject = await client.apis['dtk.io'].v1alpha1.namespace(namespace).actions(name).get();
     console.log(crdObject);
     crdObject.body.spec.status.steps.push({ id: call.request.actionId, state: "EXECUTING", startedAt: new Date() })
-    let update = await client.apis['dtk.io'].v1alpha1.namespace('test').actions('group-test1').put(crdObject);
+    let update = await client.apis['dtk.io'].v1alpha1.namespace(namespace).actions(name).put(crdObject);
     console.log("[ KUBE ] Updated action to executing in crd", update);
     await sleep(3000);
 
-    crdObject = await client.apis['dtk.io'].v1alpha1.namespace('test').actions('group-test1').get();
+    crdObject = await client.apis['dtk.io'].v1alpha1.namespace(namespace).actions(name).get();
     const index = crdObject.body.spec.status.steps.findIndex((element) => {
       return element.id == call.request.actionId;
     })
     crdObject.body.spec.status.steps[index].state = "FINISHED";
     crdObject.body.spec.status.steps[index].finishedAt = new Date();
-    update = await client.apis['dtk.io'].v1alpha1.namespace('test').actions('group-test1').put(crdObject);
+    update = await client.apis['dtk.io'].v1alpha1.namespace(namespace).actions(name).put(crdObject);
     console.log("[ KUBE ] Updated action to finished in crd", update);
 
   }
