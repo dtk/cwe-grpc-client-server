@@ -36,7 +36,7 @@ cursor = {
 }
 
 module.exports = received_message = {
-  name: "component-group-test1",
+  name: "create-component-group-test1",
   namespace: "test",
   cursor
 }
