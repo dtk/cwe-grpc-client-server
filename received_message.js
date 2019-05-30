@@ -36,7 +36,7 @@ cursor = {
 }
 
 module.exports = received_message = {
-  name: "create-base-network-target",
-  namespace: "network-service-instance",
+  name: "component-group-test1",
+  namespace: "test",
   cursor
 }
