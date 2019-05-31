@@ -7,7 +7,6 @@ const envConfig = require("./config/grpc");
 
 var grpc = require("grpc");
 var protoLoader = require("@grpc/proto-loader");
-const port = "8082";
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: false,
   longs: String,
