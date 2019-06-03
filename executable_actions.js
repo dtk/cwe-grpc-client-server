@@ -1,26 +1,28 @@
-
-
 var protocolVersion = 2;
 
 var providerAttrValue = {
   value: "scripts/node_group__converge.rb",
   datatype: "string",
   hidden: false
-}
+};
 
-var providerAttributes = [{
-  key: "entrypoint",
-  attributeValue: providerAttrValue
-}];
-
-var instanceAttributes = [{
-  key: "system.service_instance_name",
-  attributeValue: {
-    value: "test1-kube-nodes",
-    datatype: "string",
-    hidden: false
+var providerAttributes = [
+  {
+    key: "entrypoint",
+    attributeValue: providerAttrValue
   }
-}];
+];
+
+var instanceAttributes = [
+  {
+    key: "system.service_instance_name",
+    attributeValue: {
+      value: "test1-kube-nodes",
+      datatype: "string",
+      hidden: false
+    }
+  }
+];
 
 var attributes = {
   provider: providerAttributes,
@@ -33,8 +35,8 @@ var executionEnvironment = {
 };
 
 var ruby_handler = {
-  entrypoint: 'scripts/node_group__converge.rb'
-}
+  entrypoint: "scripts/node_group__converge.rb"
+};
 
 var ruby_handler_buffer = Buffer.from(JSON.stringify(ruby_handler));
 var environment_buffer = Buffer.from(JSON.stringify(executionEnvironment));
@@ -43,7 +45,7 @@ var ruby_action_1 = {
   protocolVersion: protocolVersion,
   taskId: 1,
   topTaskId: 0,
-  lang: 'ruby',
+  lang: "ruby",
   handlerBuffer: ruby_handler_buffer,
   environmentBuffer: environment_buffer,
   componentInstance: "component_instance_1",
@@ -56,10 +58,10 @@ var ruby_action_1 = {
   method: "METHOD"
 };
 
-var ruby_action_2 = {...ruby_action_1};
+var ruby_action_2 = { ...ruby_action_1 };
 ruby_action_2.taskId = 3;
 
-var ruby_action_3 = {...ruby_action_1};
+var ruby_action_3 = { ...ruby_action_1 };
 ruby_action_3.taskId = 5;
 ruby_action_3.topTaskId = 2;
 
@@ -73,7 +75,7 @@ var bash_action = {
   protocolVersion: protocolVersion,
   taskId: 4,
   topTaskId: 2,
-  lang: 'bash',
+  lang: "bash",
   handlerBuffer: bash_handler_buffer,
   environmentBuffer: environment_buffer,
   componentInstance: "component_instance_1",
@@ -85,7 +87,6 @@ var bash_action = {
   type: "EXECUTABLE",
   method: "METHOD"
 };
-
 
 // TODO Vedad: Puppet
 // var puppet_handler = {
@@ -111,16 +112,16 @@ var bash_action = {
 //   method: "METHOD"
 // }
 
-var ruby_action_4 = {...ruby_action_3};
+var ruby_action_4 = { ...ruby_action_3 };
 ruby_action_4.topTaskId = 20;
 ruby_action_4.taskId = 19;
-var ruby_action_5 = {...ruby_action_3};
+var ruby_action_5 = { ...ruby_action_3 };
 ruby_action_5.taskId = 21;
 
 var executable_actions_3 = Buffer.from(JSON.stringify([ruby_action_4]));
 
 var decomposition_2 = {
-  temporalRelationship: 'SEQUENTIAL',
+  temporalRelationship: "SEQUENTIAL",
   nestedActions: executable_actions_3
 };
 
@@ -136,10 +137,12 @@ var abstract_action_2 = {
   topTaskId: 2
 };
 
-var executable_actions_2 = Buffer.from(JSON.stringify([ruby_action_5, ruby_action_3, abstract_action_2]));
+var executable_actions_2 = Buffer.from(
+  JSON.stringify([ruby_action_5, ruby_action_3, abstract_action_2])
+);
 
 var decomposition = {
-  temporalRelationship: 'SEQUENTIAL',
+  temporalRelationship: "SEQUENTIAL",
   nestedActions: executable_actions_2
 };
 
@@ -153,7 +156,7 @@ var abstract_action = {
   decomposition: decomposition,
   schemaVersion: 2,
   topTaskId: 0
-}
+};
 
 module.exports = [ruby_action_1, abstract_action, ruby_action_2];
 

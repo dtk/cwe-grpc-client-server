@@ -1,9 +1,9 @@
-var executable_actions = require('./executable_actions');
+var executable_actions = require("./executable_actions");
 
 let executable_actions_buff = Buffer.from(JSON.stringify(executable_actions));
 
 var decomposition = {
-  temporalRelationship: 'SEQUENTIAL',
+  temporalRelationship: "SEQUENTIAL",
   nestedActions: executable_actions_buff
 };
 
@@ -33,10 +33,10 @@ var abstract_action = {
 cursor = {
   index: 0,
   position: "after"
-}
+};
 
 module.exports = received_message = {
   name: "create-component-group-test1",
   namespace: "test",
   cursor
-}
+};
