@@ -93,9 +93,9 @@ message ExecutionEnvironment {
 // }
 
 message ExecutableAction {
-  int32 action_id = 1;
+  string action_id = 1;
 }
 
 message CancelMessage {
-  int32 task_id = 1;
+  string task_id = 1;
 }
