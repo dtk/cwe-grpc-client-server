@@ -3,6 +3,7 @@ const Client = require("kubernetes-client").Client;
 const K8sConfig = require("kubernetes-client").config;
 const config = K8sConfig.fromKubeconfig();
 const client = new Client({ config: config, version: "1.9" });
+const envConfig = require("./config/grpc");
 
 var grpc = require("grpc");
 var protoLoader = require("@grpc/proto-loader");
@@ -124,7 +125,10 @@ function main() {
     ping: ping,
     testStreamStream: testStreamStream
   });
-  server.bind("0.0.0.0:" + port, grpc.ServerCredentials.createInsecure());
+  server.bind(
+    envConfig.grpc.serverAddress + ":" + envConfig.grpc.serverPort,
+    grpc.ServerCredentials.createInsecure()
+  );
   server.start();
   console.log("server started: ", server);
 }
