@@ -1,4 +1,4 @@
 module.exports = cancel_message = {
-  taskId: 0,
+  taskId: -1,
   status: "Sending cancel message"
 };

@@ -89,7 +89,7 @@ async function streamAction(call, callback) {
     const index = crdObject.body.spec.status.steps.findIndex(element => {
       return element.id == call.request.actionId;
     });
-    crdObject.body.spec.status.steps[index].state = "FINISHED";
+    crdObject.body.spec.status.steps[index].state = "SUCCESS";
     crdObject.body.spec.status.steps[index].finishedAt = new Date();
     update = await client.apis["dtk.io"].v1alpha1
       .namespace(namespace)

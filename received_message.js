@@ -31,7 +31,7 @@ var abstract_action = {
 // };
 
 cursor = {
-  index: 0,
+  index: "-1",
   position: "after"
 };
 
