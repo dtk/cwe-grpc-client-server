@@ -22,7 +22,7 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.4.0",
     "@kubernetes/client-node": "^0.8.2",
-    "comm-interface": "git://github.com/dtk/comm-interface.git",
+    "comm-interface": "^1.5.8",
     "express": "^4.17.1",
     "grpc": "^1.19.0",
     "grpc-helper": "^0.4.1",
