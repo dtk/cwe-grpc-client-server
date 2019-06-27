@@ -1,5 +1,4 @@
 package pckg_executable_action;
-syntax = "proto3";
 
 service ActionRequest {
   rpc StreamAction (ExecutableAction) returns (RequestAck) {}
@@ -9,93 +8,23 @@ service ActionRequest {
 }
 
 message TestRequest {
-  int32 id = 1;
+  required int32 id = 1;
 }
 
 message TestResponse {
-  int32 id = 1;
-}
-
-message ActionUpdate {
-  int32 task_id = 1;
-  string message = 2;
-  int32 id = 3;
+  required int32 id = 1;
 }
 
 message RequestAck {
-  int32 task_id = 1;
-  string message = 2;
-  string status = 3;
+  required int32 task_id = 1;
+  required string message = 2;
+  required string status = 3;
 }
-
-message Pair {
-  string key = 1;
-  string value = 2;
-}
-
-message Component {
-  string type = 1;
-  string version = 2;
-  string title = 3;
-  string namespace = 4;
-  string module_name = 5;
-}
-
-message AttributeValue {
-  string value = 1;
-  string datatype = 2;
-  bool hidden = 3;
-}
-
-message AttributePair {
-  string key = 1;
-  AttributeValue attribute_value = 2;
-}
-
-message Attributes {
-  repeated AttributePair provider = 1;
-  repeated AttributePair instance = 2;
-}
-
-message ModuleInfo {
-  string repo = 1;
-  string branch = 2;
-  string sha = 3;
-  bool frozen = 4;
-}
-
-message Module {
-  string name = 1;
-  ModuleInfo module_info = 2;
-}
-
-message ExecutionEnvironment {
-  string type = 1;
-  string docker_file = 2;
-}
-
-// message ExecutableAction {
-//   int32 protocol_version = 1;
-//   int32 task_id = 2;
-//   int32 top_task_id = 3;
-//   string lang = 4;
-//   bytes handler_buffer = 5;
-//   bytes environment_buffer = 6;
-//   string component_instance = 7;
-//   Attributes attributes = 8;
-//   string user_public_key = 9;
-//   int32 debug_port_request = 10;
-//   int32 retry_info = 11;
-//   int32 timeout_info = 12;
-//   string type = 13;
-//   string method = 14;
-//   int32 id = 15;
-// }
 
 message ExecutableAction {
-  string action_id = 1;
+  required string action_id = 1;
 }
 
 message CancelMessage {
-  string task_id = 1;
+  required string task_id = 1;
 }

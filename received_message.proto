@@ -1,5 +1,4 @@
 package pckg_received_message;
-syntax = "proto3";
 
 import "executable_action.proto";
 
@@ -8,56 +7,23 @@ service ActionRequest {
   rpc CancelAction (CancelMessage) returns (RequestAck) {}
 }
 
-message ActionUpdate {
-  int32 task_id = 1;
-  string message = 2;
-}
-
 message RequestAck {
-  int32 task_id = 1;
-  string message = 2;
-  string status = 3;
+  required int32 task_id = 1;
+  required string message = 2;
+  required string status = 3;
 }
-
-message Decomposition {
-  string temporal_relationship = 1;
-  bytes nested_actions = 2;
-};
-
-message AbstractAction {
-  int32 task_id = 1;
-  string name = 2;
-  string type = 3;
-  string description = 4;
-  int32 retry_count = 5;
-  int32 retry_delay_seconds = 6;
-  Decomposition decomposition = 7;
-  int32 schema_version = 8;
-  int32 top_task_id = 9;
-};
-
-// message ReceivedMessage {
-//   string type = 1;
-//   AbstractAction abstract_action = 2;
-// }
-
-// message ReceivedMessage {
-//   string endpoint = 1;
-//   string path = 2;
-//   int32 index = 3;
-// }
 
 message Cursor {
-  int32 index = 1;
-  string position = 2;
+  required int32 index = 1;
+  required string position = 2;
 }
 
 message ReceivedMessage {
-  string name = 1;
-  string namespace = 2;
-  Cursor cursor = 3;
+  required string name = 1;
+  required string namespace = 2;
+  required Cursor cursor = 3;
 }
 
 message CancelMessage {
-  int32 task_id = 1;
+  required int32 task_id = 1;
 }
