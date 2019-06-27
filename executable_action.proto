@@ -8,21 +8,21 @@ service ActionRequest {
 }
 
 message TestRequest {
-  required int32 id = 1;
+  optional int32 id = 1;
 }
 
 message TestResponse {
-  required int32 id = 1;
+  optional int32 id = 1;
 }
 
 message RequestAck {
-  required int32 task_id = 1;
-  required string message = 2;
-  required string status = 3;
+  optional int32 task_id = 1;
+  optional string message = 2;
+  optional string status = 3;
 }
 
 message ExecutableAction {
-  required string action_id = 1;
+  optional string action_id = 1;
 }
 
 message CancelMessage {

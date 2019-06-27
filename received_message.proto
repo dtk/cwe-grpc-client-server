@@ -8,22 +8,22 @@ service ActionRequest {
 }
 
 message RequestAck {
-  required int32 task_id = 1;
-  required string message = 2;
-  required string status = 3;
+  optional int32 task_id = 1;
+  optional string message = 2;
+  optional string status = 3;
 }
 
 message Cursor {
-  required int32 index = 1;
-  required string position = 2;
+  optional int32 index = 1;
+  optional string position = 2;
 }
 
 message ReceivedMessage {
-  required string name = 1;
-  required string namespace = 2;
-  required Cursor cursor = 3;
+  optional string name = 1;
+  optional string namespace = 2;
+  optional Cursor cursor = 3;
 }
 
 message CancelMessage {
-  required int32 task_id = 1;
+  optional int32 task_id = 1;
 }
