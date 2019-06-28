@@ -1,0 +1,10 @@
+.git
+out
+coverage
+node_modules
+npm-debug
+.env
+create-image.sh
+tests/
+__tests__/
+jest.config.js

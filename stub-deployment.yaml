@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: stub-remote-executor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: stub-remote-executor
+  template:
+    metadata:
+      labels:
+        run: stub-remote-executor
+    spec:
+      serviceAccountName: api-service-account
+      containers:
+        - name: app-container
+          image: fvedo1/stub-remote-executor
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082

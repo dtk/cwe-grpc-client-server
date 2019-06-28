@@ -14,7 +14,7 @@ message RequestAck {
 }
 
 message Cursor {
-  optional int32 index = 1;
+  optional string index = 1;
   optional string position = 2;
 }
 

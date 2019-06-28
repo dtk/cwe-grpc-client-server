@@ -1,7 +1,8 @@
+require("dotenv").config();
 var PROTO_PATH = "executable_action.proto";
 const Client = require("kubernetes-client").Client;
 const K8sConfig = require("kubernetes-client").config;
-const config = K8sConfig.fromKubeconfig();
+const config = eval(`K8sConfig.${process.env.KUBE_CONFIG_METHOD}`);
 const client = new Client({ config: config, version: "1.9" });
 const envConfig = require("./config/grpc");
 

@@ -1,3 +1,5 @@
+create-image.sh
+
 # Logs
 logs
 *.log
