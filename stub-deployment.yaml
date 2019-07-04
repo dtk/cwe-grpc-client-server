@@ -15,7 +15,7 @@ spec:
       serviceAccountName: api-service-account
       containers:
         - name: app-container
-          image: fvedo1/stub-remote-executor
+          image: {user-name}/stub-remote-executor
           imagePullPolicy: Always
           ports:
             - containerPort: 8082
