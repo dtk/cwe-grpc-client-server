@@ -1,7 +1,7 @@
 module.exports = {
   grpc: {
-    clientAddress: "192.168.99.102",
-    clientPort: "31038",
+    clientAddress: "10.108.2.221",
+    clientPort: "3000",
     serverAddress: "0.0.0.0",
     serverPort: "8082"
   }
