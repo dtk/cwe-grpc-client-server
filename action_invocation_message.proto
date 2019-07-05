@@ -1,0 +1,18 @@
+package pckg_action_invocation_message;
+
+service ActionRequest {
+  rpc ReqReceived (ActionMessage) returns (RequestAck) {}
+}
+
+message RequestAck {
+  required string status = 1;
+  required string errorMessage = 2;
+}
+
+message ActionMessage {
+  required string image = 1;
+  optional string serviceAccountName = 2;
+  optional string secretName = 3;
+  required string action_crd_object = 4;
+  required string step = 5;
+}

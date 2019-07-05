@@ -1,7 +1,5 @@
 package pckg_received_message;
 
-import "executable_action.proto";
-
 service ActionRequest {
   rpc SendAction (ReceivedMessage) returns (RequestAck) {}
   rpc CancelAction (CancelMessage) returns (RequestAck) {}
