@@ -2,6 +2,16 @@ package pckg_action_invocation_message;
 
 service ActionRequest {
   rpc ReqReceived (ActionMessage) returns (RequestAck) {}
+  rpc CancelAction (CancelRequest) returns (CancelResponse) {}
+}
+
+message CancelRequest {
+  required string taskId = 1;
+}
+
+message CancelResponse {
+  required string taskId = 1;
+  required string message = 2;
 }
 
 message RequestAck {

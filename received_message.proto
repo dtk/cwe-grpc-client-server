@@ -6,7 +6,7 @@ service ActionRequest {
 }
 
 message RequestAck {
-  optional int32 task_id = 1;
+  optional string task_id = 1;
   optional string message = 2;
   optional string status = 3;
 }
@@ -23,5 +23,5 @@ message ReceivedMessage {
 }
 
 message CancelMessage {
-  optional int32 task_id = 1;
+  optional string task_id = 1;
 }

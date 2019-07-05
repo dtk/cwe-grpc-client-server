@@ -100,10 +100,19 @@ async function reqReceived(call, callback) {
   }
 }
 
+async function cancelAction(call, callback) {
+  console.log("Cancel received");
+  callback(null, {
+    taskId: call.request.taskId,
+    message: "Cancel received and updated"
+  });
+}
+
 function main() {
   var server = new grpc.Server();
   server.addService(action_invocation_proto.ActionRequest.service, {
-    reqReceived: reqReceived
+    reqReceived: reqReceived,
+    cancelAction: cancelAction
   });
   server.bind(
     envConfig.grpc.serverAddress + ":" + envConfig.grpc.serverPort,
