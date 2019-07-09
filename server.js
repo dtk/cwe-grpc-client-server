@@ -7,7 +7,7 @@ const client = new Client({ config: config, version: "1.9" });
 const envConfig = require("./config/grpc");
 const dateformat = require("dateformat");
 
-const DATE_FORMAT = "yyyy-mm-dd HH:MM:ss";
+const DATE_FORMAT = "yyyy-mm-dd HH:MM:ss:l";
 
 const formatDate = date => {
   return dateformat(date, DATE_FORMAT);
