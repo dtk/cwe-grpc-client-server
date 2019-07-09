@@ -5,6 +5,13 @@ const K8sConfig = require("kubernetes-client").config;
 const config = eval(`K8sConfig.${process.env.KUBE_CONFIG_METHOD}`);
 const client = new Client({ config: config, version: "1.9" });
 const envConfig = require("./config/grpc");
+const dateformat = require("dateformat");
+
+const DATE_FORMAT = "yyyy-mm-dd HH:MM:ss";
+
+const formatDate = date => {
+  return dateformat(date, DATE_FORMAT);
+};
 
 var grpc = require("grpc");
 var protoLoader = require("@grpc/proto-loader");
@@ -19,13 +26,19 @@ var action_invocation_proto = grpc.loadPackageDefinition(packageDefinition)
   .pckg_action_invocation_message;
 
 const template = require("./template_crd.json");
-const OK = {
-  errorMessage: "",
-  status: "OK"
+getOK = dateTime => {
+  return {
+    errorMessage: "",
+    status: "OK",
+    actionStartDate: dateTime
+  };
 };
-const NOTOK = {
-  errorMessage: "Error",
-  status: "NOTOK"
+
+getNOTOK = () => {
+  return {
+    errorMessage: "Error",
+    status: "NOTOK"
+  };
 };
 
 function sleep(ms) {
@@ -33,7 +46,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function pushCrd(namespace, name, step) {
+async function pushCrd(namespace, name, step, startedAt) {
   let crdObject = await client.apis["dtk.io"].v1alpha1
     .namespace(namespace)
     .actions(name)
@@ -41,25 +54,25 @@ async function pushCrd(namespace, name, step) {
   crdObject.body.spec.status.steps.push({
     id: step,
     state: "EXECUTING",
-    startedAt: new Date()
+    startedAt: startedAt
   });
-  const update = await client.apis["dtk.io"].v1alpha1
+  await client.apis["dtk.io"].v1alpha1
     .namespace(namespace)
     .actions(name)
     .put(crdObject);
 }
 
-async function updateCrd(namespace, name, state, message, step) {
+async function updateCrd(namespace, name, state, message, step, startedAt) {
   crdObject = await client.apis["dtk.io"].v1alpha1
     .namespace(namespace)
     .actions(name)
     .get();
   const index = crdObject.body.spec.status.steps.findIndex(element => {
-    return element.id == step;
+    return element.id === step && element.startedAt === startedAt;
   });
   crdObject.body.spec.status.steps[index].state = state;
   if (message) crdObject.body.spec.status.steps[index].errorMessage = message;
-  crdObject.body.spec.status.steps[index].finishedAt = new Date();
+  crdObject.body.spec.status.steps[index].finishedAt = formatDate(new Date());
   await client.apis["dtk.io"].v1alpha1
     .namespace(namespace)
     .actions(name)
@@ -73,11 +86,13 @@ async function reqReceived(call, callback) {
   const { actionCrdObject, step } = call.request;
 
   const [namespace, name] = actionCrdObject.split("/");
+  const startedAt = formatDate(new Date());
 
   //change result property to trigger OK or NOTOK
-  const result = OK;
-
+  const result = getOK(startedAt);
+  console.log("SENDING OK/NOTOK: ", result);
   callback(null, result);
+
   if (result.status === "NOTOK") {
     await pushCrd(namespace, name, step);
     return await updateCrd(
@@ -90,13 +105,13 @@ async function reqReceived(call, callback) {
   }
 
   try {
-    await pushCrd(namespace, name, step);
+    await pushCrd(namespace, name, step, startedAt);
     console.log("[ KUBE ] Updated action " + step + " to executing in crd");
     await sleep(3000);
-    await updateCrd(namespace, name, "SUCCESS", null, step);
+    await updateCrd(namespace, name, "SUCCESS", null, step, startedAt);
     console.log("[ KUBE ] Updated action " + step + " to finished in crd");
   } catch (error) {
-    await updateCrd(namespace, name, "FAILURE", "Error", step);
+    await updateCrd(namespace, name, "FAILURE", "Error", step, startedAt);
   }
 }
 
