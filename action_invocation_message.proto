@@ -17,7 +17,7 @@ message CancelResponse {
 message RequestAck {
   required string status = 1;
   required string errorMessage = 2;
-  optional string actionStartDate = 3;
+  optional string actionStartTimestamp = 3;
 }
 
 message ActionMessage {
