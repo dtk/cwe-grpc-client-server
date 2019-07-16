@@ -105,9 +105,19 @@ async function reqReceived(call, callback) {
   }
 
   try {
-    await pushCrd(namespace, name, step, startedAt);
+    console.log("Pushing...");
+    for (let i = 1; i <= 10; i++) {
+      try {
+        console.log("Trying to push action ", step);
+        await pushCrd(namespace, name, step, startedAt);
+        break;
+      } catch (err) {
+        console.log("Retrying... " + i + "/10");
+      }
+    }
     console.log("[ KUBE ] Updated action " + step + " to executing in crd");
     await sleep(3000);
+    console.log("Updating...");
     await updateCrd(namespace, name, "SUCCESS", null, step, startedAt);
     console.log("[ KUBE ] Updated action " + step + " to finished in crd");
   } catch (error) {
