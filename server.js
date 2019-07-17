@@ -89,20 +89,29 @@ async function reqReceived(call, callback) {
   const startedAt = formatDate(new Date());
 
   //change result property to trigger OK or NOTOK
-  const result = getOK(startedAt);
+  const result = step === "2.1.1" ? getNOTOK(startedAt) : getOK(startedAt);
   console.log("SENDING OK/NOTOK: ", result);
-  callback(null, result);
 
   if (result.status === "NOTOK") {
-    await pushCrd(namespace, name, step);
-    return await updateCrd(
-      namespace,
-      name,
-      "FAILURE",
-      result.errorMessage,
-      step
-    );
+    for (let i = 1; i <= 10; i++) {
+      try {
+        await pushCrd(namespace, name, step, startedAt);
+        await updateCrd(
+          namespace,
+          name,
+          "FAILURE",
+          result.errorMessage,
+          step,
+          startedAt
+        );
+        callback(null, result);
+        return;
+      } catch (err) {
+        console.log("Retrying... " + i + "/10");
+      }
+    }
   }
+  callback(null, result);
 
   try {
     console.log("Pushing...");
