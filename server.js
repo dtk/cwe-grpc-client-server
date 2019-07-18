@@ -89,7 +89,14 @@ async function reqReceived(call, callback) {
   const startedAt = formatDate(new Date());
 
   //change result property to trigger OK or NOTOK
-  const result = getOK(startedAt);
+  let result = getOK(startedAt);
+  console.log(
+    process.env.TEST_OK,
+    "step " + step,
+    "Action step " + process.env.ACTION_STEP
+  );
+  if (process.env.TEST_OK === false && step == process.env.ACTION_STEP)
+    result = getNOTOK(startedAt);
   console.log("SENDING OK/NOTOK: ", result);
 
   if (result.status === "NOTOK") {
