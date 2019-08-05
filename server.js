@@ -95,8 +95,11 @@ async function reqReceived(call, callback) {
     "step " + step,
     "Action step " + process.env.ACTION_STEP
   );
-  if (process.env.TEST_OK === false && step == process.env.ACTION_STEP)
+	
+  if (process.env.TEST_OK == 'false' && step === process.env.ACTION_STEP) {
+	  console.log("INT");
     result = getNOTOK(startedAt);
+}
   console.log("SENDING OK/NOTOK: ", result);
 
   if (result.status === "NOTOK") {
