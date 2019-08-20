@@ -3,9 +3,15 @@ cursor = {
   position: "after"
 };
 
+//module.exports = received_message = {
+//  name: "create-component-group-test1",
+//  namespace: "test",
+//  cursor
+//};
+
 module.exports = received_message = {
-  name: "create-component-group-test1",
-  namespace: "test",
+  name: "create-subnet-security-group",
+  namespace: "default",
   cursor
 };
 

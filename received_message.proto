@@ -16,10 +16,16 @@ message Cursor {
   optional string position = 2;
 }
 
+message Debug {
+  optional string task_id = 1;
+  optional bool debug = 2;
+}
+
 message ReceivedMessage {
   optional string name = 1;
   optional string namespace = 2;
   optional Cursor cursor = 3;
+  optional Debug debug = 4;
 }
 
 message CancelMessage {
