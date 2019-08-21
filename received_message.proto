@@ -17,8 +17,7 @@ message Cursor {
 }
 
 message Debug {
-  optional string task_id = 1;
-  optional bool debug = 2;
+  required string task_id = 1;
 }
 
 message ReceivedMessage {
