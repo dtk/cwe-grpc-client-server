@@ -3,12 +3,6 @@ cursor = {
   position: "after"
 };
 
-//module.exports = received_message = {
-//  name: "create-component-group-test1",
-//  namespace: "test",
-//  cursor
-//};
-
 debug = {
   taskId: "1"
 }
@@ -16,8 +10,5 @@ debug = {
 module.exports = received_message = {
   name: "create-subnet-security-group",
   namespace: "default",
-  cursor,
-  debug
+  cursor
 };
-
-// ./grpcurl -plaintext -proto received_message.proto -d '{"name": "create-component-group-test1","namespace": "test","cursor": {"index": "-1","position": "after"}}'
